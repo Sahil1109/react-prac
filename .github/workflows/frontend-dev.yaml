@@ -3,7 +3,7 @@ name: frontend:dev
 on:
   push:
     paths:
-      - './test'
+      - '../../test'
     branches:
       - main
       - dev

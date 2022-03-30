@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "ts-node index.ts",
-    "lint": "eslint 'src/**/*.{ts,tsx,stories.tsx}' --quiet",
+    "lint": "eslint . --ext .ts",
     "test": "jest",
     "prettify": "prettier --write .",
     "build": "tsc"

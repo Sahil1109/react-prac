@@ -16,22 +16,17 @@ on:
 jobs:
   static-check:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 16
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+          node-version: 16
+          cache: 'npm'
     - name: Install dependencies
       run: npm install
     - name: Check lint
-      run: eslint 'src/**/*.{ts,tsx,stories.tsx}' --quiet
+      run: eslint . --ext .ts
   build:
     needs: static-check
     runs-on: ubuntu-latest
@@ -42,7 +37,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
-          cache: "yarn"
+          cache: "npm"
       - name: Install dependencies
         run: yarn install
       - name: Generate build

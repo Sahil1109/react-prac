@@ -2,11 +2,11 @@ name: frontend:dev
 
 on:
   push:
-    paths:
-      - 'test'
     branches:
       - main
       - dev
+    paths:
+      - 'test/**'
 
 jobs:
   static-check:

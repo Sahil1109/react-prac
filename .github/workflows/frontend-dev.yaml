@@ -1,4 +1,4 @@
-name: frontend:dev
+name: frontend:test
 
 on:
   push:
@@ -12,48 +12,5 @@ jobs:
   static-check:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js 16
-      uses: actions/setup-node@v3
-      with:
-          node-version: 16
-          cache: 'npm'
-    - name: Install dependencies
-      run: npm install
-    - name: Check lint
-      run: eslint . --ext .ts
-  build:
-    needs: static-check
-    runs-on: ubuntu-latest
-    steps:
       - name: Clone repository
-        uses: actions/checkout@v2
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-          cache: "npm"
-      - name: Install dependencies
-        run: yarn install
-      - name: Generate build
-        run: npm run build
-      # Share artifact inside workflow
-      - name: Share artifact inside workflow
-        uses: actions/upload-artifact@v1
-        with:
-          name: react-github-actions-build
-          path: build
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Clone repository
-        uses: actions/checkout@v2
-      - name: Deploy to firebase
-        id: firebase-deploy
-        uses: mohammed-atif/firebase-publish-react@v1.0
-        with:
-          firebase-token: ${{ secrets.FIREBASE_TOKEN }}
-      - name: Verify Output
-        run: echo ${{ steps.firebase-deploy.outputs.hosting-url }}
+        uses: echo TEST

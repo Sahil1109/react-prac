@@ -2,16 +2,11 @@ name: frontend:dev
 
 on:
   pull_request:
+    paths:
+      - '../test/'
     branches:
       - main
       - dev
-  workflow_dispatch:
-    inputs:
-      fe-tag:
-        description: "Tag for branch to build"
-        type: string
-        default: "dev"
-        required: true
 
 jobs:
   static-check:

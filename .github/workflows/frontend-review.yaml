@@ -13,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
-        uses: echo DEMO
+        run: echo DEMO

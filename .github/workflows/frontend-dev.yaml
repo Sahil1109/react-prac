@@ -2,8 +2,8 @@ name: frontend:dev
 
 on:
   pull_request:
-    paths:
-      - '../test/'
+    # paths:
+    #   - '../test/'
     branches:
       - main
       - dev

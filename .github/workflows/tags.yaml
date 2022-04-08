@@ -29,7 +29,6 @@ jobs:
           echo Branch: ${GITHUB_REF/refs\/tags\//}
           echo VALUE: ${{ needs.deployProd.outputs.output1 }}
           echo boolean ${{needs.deploy-prod.outputs.output1 == 'prod'}}
-          echo boolean 2 ${{needs.deploy-prod.outputs.output1 == prod}}
       - name: Deploy
         run: echo "Deploy Prod ${{needs.deployProd.outputs.output1}}"
         if: ${{needs.deploy-prod.outputs.output1 == 'prod'}}

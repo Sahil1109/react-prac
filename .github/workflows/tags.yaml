@@ -28,9 +28,7 @@ jobs:
           echo Branch: ${GITHUB_REF/refs\/tags\//}
           echo "VALUE: ${{ needs.deployProd.outputs.output1 }}"
           echo "boolean: ${{ needs.deployProd.outputs.output1 == 'true' }}"
-          echo github env 1 ${IS_PROD}
-          echo github env 2 $IS_PROD
-          echo github env 3 ${{IS_PROD}}
+          echo github env 1 $IS_PROD
 
       - name: Deploy
         run: echo "Deploy Prod ${{ needs.deployProd.outputs.output1 }}"

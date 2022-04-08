@@ -19,6 +19,10 @@ jobs:
             echo "Matches"
             echo "::set-output name=test::$VAR"
           fi
+      - name: Show variables
+        run: |
+          echo "VALUE: ${{needs.deploy-web3-review.outputs.output1}}"
+          echo "boolean: ${{needs.deploy-web3-review.outputs.output1 == 'true'}}"
   build-amal-web-review:
     runs-on: ubuntu-latest
     needs: deploy-web3-review

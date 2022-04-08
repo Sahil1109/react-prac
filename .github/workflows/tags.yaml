@@ -7,7 +7,7 @@ on:
 
 jobs:
   # API
-  deploy-prod:
+  deployProd:
     runs-on: ubuntu-latest
     outputs:
       output1: ${{steps.step1.outputs.prod}}
@@ -18,6 +18,7 @@ jobs:
         id: step1
         run: |
           Branch=${GITHUB_REF/refs\/tags\//}
+          echo $Branch
           if [[ "$Branch" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
             echo "::set-output name=prod::true"
           else
@@ -26,12 +27,12 @@ jobs:
       - name: Test
         run: |
           echo Branch: ${GITHUB_REF/refs\/tags\//}
-          echo VALUE: ${{ needs.deploy-prod.outputs.output1 }}
+          echo VALUE: ${{ needs.deployProd.outputs.output1 }}
       - name: Deploy
         run: echo "Deploy Prod ${{needs.deploy-prod.outputs.output1}}"
         if: ${{needs.deploy-prod.outputs.output1 == 'true'}}
 
-  deploy-uat:
+  deployUat:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
@@ -41,5 +42,5 @@ jobs:
           echo Branch: ${GITHUB_REF/refs\/tags\//}
           echo VALUE: ${{ needs.deploy-prod.outputs.output1 }}
       - name: Deploy
-        run: echo "Deploy UAT ${{needs.deploy-prod.outputs.output1}}"
+        run: echo "Deploy UAT ${{needs.deployProd.outputs.output1}}"
         if: ${{ needs.deploy-prod.outputs.output1 == 'false'}}

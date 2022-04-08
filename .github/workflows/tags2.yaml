@@ -13,8 +13,12 @@ jobs:
         id: step1
         run: |
           VAR=true
-          echo value of VAR is $VAR
-          echo "::set-output name=test::$VAR"
+          Branch=v0.1.2
+          echo $Branch
+          if [[ "$Branch" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
+            echo "Matches"
+            echo "::set-output name=test::$VAR"
+          fi
   build-amal-web-review:
     runs-on: ubuntu-latest
     needs: deploy-web3-review

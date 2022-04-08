@@ -19,18 +19,20 @@ jobs:
           echo $Branch
           if [[ "$Branch" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
             echo "Matches"
-            echo "::set-output name=test::1"
+            echo "::set-output name=test::prod"
           else
             echo "Doesn't Matches"
-            echo "::set-output name=test::0"
+            echo "::set-output name=test::uat"
           fi
       - name: Show variables
         run: |
           echo Branch: ${GITHUB_REF/refs\/tags\//}
           echo VALUE: ${{ needs.deployProd.outputs.output1 }}
+          echo boolean ${{needs.deploy-prod.outputs.output1 == 'prod'}}
+          echo boolean 2 ${{needs.deploy-prod.outputs.output1 == prod}}
       - name: Deploy
         run: echo "Deploy Prod ${{needs.deployProd.outputs.output1}}"
-        if: ${{needs.deploy-prod.outputs.output1 == 1}}
+        if: ${{needs.deploy-prod.outputs.output1 == 'prod'}}
 
   deployUat:
     runs-on: ubuntu-latest
@@ -43,4 +45,4 @@ jobs:
           echo VALUE: ${{ needs.deploy-prod.outputs.output1 }}
       - name: Deploy
         run: echo "Deploy UAT ${{needs.deployProd.outputs.output1}}"
-        if: ${{ needs.deploy-prod.outputs.output1 == 0}}
+        if: ${{ needs.deploy-prod.outputs.output1 == 'uat'}}

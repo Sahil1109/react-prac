@@ -28,10 +28,10 @@ jobs:
         run: |
           echo Branch: ${GITHUB_REF/refs\/tags\//}
           echo VALUE: ${{ needs.deployProd.outputs.output1 }}
-          echo boolean ${{needs.deploy-prod.outputs.output1 == 'prod'}}
+          echo boolean ${{needs.deployProd.outputs.output1 == 'prod'}}
       - name: Deploy
         run: echo "Deploy Prod ${{needs.deployProd.outputs.output1}}"
-        if: ${{needs.deploy-prod.outputs.output1 == 'prod'}}
+        if: ${{ needs.deployProd.outputs.output1 == 'prod'}}
 
   deployUat:
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
       - name: Show variables
         run: |
           echo Branch: ${GITHUB_REF/refs\/tags\//}
-          echo VALUE: ${{ needs.deploy-prod.outputs.output1 }}
+          echo VALUE: ${{ needs.deployProd.outputs.output1 }}
       - name: Deploy
         run: echo "Deploy UAT ${{needs.deployProd.outputs.output1}}"
-        if: ${{ needs.deploy-prod.outputs.output1 == 'uat'}}
+        if: ${{ needs.deployProd.outputs.output1 == 'uat'}}

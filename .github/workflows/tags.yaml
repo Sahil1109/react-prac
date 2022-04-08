@@ -15,20 +15,21 @@ jobs:
       - name: Set variables
         id: step1
         run: |
+          VAR=true
           Branch=${GITHUB_REF/refs\/tags\//}
           echo $Branch
           if [[ "$Branch" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
             echo "Matches"
-            echo "::set-output name=test::prod"
+            echo "::set-output name=test::$VAR"
           fi
       - name: Show variables
         run: |
           echo Branch: ${GITHUB_REF/refs\/tags\//}
-          echo VALUE: ${{ needs.deployProd.outputs.output1 }}
-          echo boolean: ${{ needs.deployProd.outputs.output1 == 'prod' }}
+          echo "VALUE: ${{ needs.deployProd.outputs.output1 }}"
+          echo "boolean: ${{ needs.deployProd.outputs.output1 == 'true' }}"
       - name: Deploy
         run: echo "Deploy Prod ${{ needs.deployProd.outputs.output1 }}"
-        if: ${{ needs.deployProd.outputs.output1 == 'prod' }}
+        if: ${{ needs.deployProd.outputs.output1 == 'true' }}
 
   deployUat:
     runs-on: ubuntu-latest
@@ -38,8 +39,8 @@ jobs:
       - name: Show variables
         run: |
           echo Branch: ${GITHUB_REF/refs\/tags\//}
-          echo VALUE: ${{ needs.deployProd.outputs.output1 }}
-          echo boolean: ${{ needs.deployProd.outputs.output1 != 'prod'}}
+          echo "VALUE: ${{ needs.deployProd.outputs.output1 }}"
+          echo "boolean: ${{ needs.deployProd.outputs.output1 != 'prod'}}"
       - name: Deploy
         run: echo "Deploy UAT ${{needs.deployProd.outputs.output1}}"
-        if: ${{ needs.deployProd.outputs.output1 != 'prod'}}
+        if: ${{ needs.deployProd.outputs.output1 != 'true'}}

@@ -19,9 +19,9 @@ jobs:
         run: |
           Branch=${GITHUB_REF/refs\/tags\//}
           if [[ "$Branch" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
-            echo "::set-output name=prod::'true'"
+            echo "::set-output name=prod::true"
           else
-            echo "::set-output name=prod::'false'"
+            echo "::set-output name=prod::false"
           fi
       - name: Test
         run: |

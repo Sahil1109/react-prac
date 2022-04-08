@@ -1,0 +1,30 @@
+name: deploy:review
+on:
+  push:
+jobs:
+  deploy-web3-review:
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step1.outputs.test }}
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Deploy contracts
+        id: step1
+        run: |
+          cd packages/web3
+          VAR=`grep -o '=.*' address.txt | cut -f2- -d=`
+          echo ADDRESS IN JOB 1 is $VAR
+          echo “::set-output name=test::$VAR”
+  build-amal-web-review:
+    runs-on: ubuntu-latest
+    needs: deploy-web3-review
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Build
+        run: |
+          cd packages/amal-web && cat .env
+          echo “”
+          echo “CONTRACT_ADDRESS=${{needs.deploy-web3-review.outputs.output1}}” > .env
+          cat .env

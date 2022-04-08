@@ -3,11 +3,30 @@ name: deploy:prod
 on:
   push:
     tags:
-      - 0.0.2
+      - v0.0.2
 
 jobs:
   # API
-  static-check-api:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{steps.step1.outputs.prod}}
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Test
+        run: |
+          Branch=${GITHUB_REF/refs\/tags\//}
+          if [[ "$Branch" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
+            echo "::set-output name=prod::'true'"
+          else
+            echo "::set-output name=prod::'false'"
+          fi
+      - name: Deploy
+        run: echo "Deploy Prod ${{needs.deploy-prod.outputs.output1}}"
+        if: ${{needs.deploy-prod.outputs.output1 == 'true'}}
+
+  deploy-uat:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
@@ -15,3 +34,6 @@ jobs:
       - name: Test
         run: |
           echo Branch: ${GITHUB_REF/refs\/tags\//}
+      - name: Deploy
+        run: echo "Deploy UAT ${{needs.deploy-prod.outputs.output1}}"
+        if: ${{needs.deploy-prod.outputs.output1 == 'false'}}

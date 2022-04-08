@@ -15,10 +15,10 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v3
       - name: Test
+        id: step1
         run: |
           Branch=${GITHUB_REF/refs\/tags\//}
           if [[ "$Branch" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
-            echo 
             echo "::set-output name=prod::'true'"
           else
             echo "::set-output name=prod::'false'"
@@ -26,7 +26,7 @@ jobs:
       - name: Test
         run: |
           echo Branch: ${GITHUB_REF/refs\/tags\//}
-          echo VALUE: ${{needs.deploy-prod.outputs.output1 }}
+          echo VALUE: ${{ needs.deploy-prod.outputs.output1 }}
       - name: Deploy
         run: echo "Deploy Prod ${{needs.deploy-prod.outputs.output1}}"
         if: ${{needs.deploy-prod.outputs.output1 == 'true'}}
@@ -39,7 +39,7 @@ jobs:
       - name: Test
         run: |
           echo Branch: ${GITHUB_REF/refs\/tags\//}
-          echo VALUE: ${{needs.deploy-prod.outputs.output1 }}
+          echo VALUE: ${{ needs.deploy-prod.outputs.output1 }}
       - name: Deploy
         run: echo "Deploy UAT ${{needs.deploy-prod.outputs.output1}}"
-        if: ${{needs.deploy-prod.outputs.output1 == 'false'}}
+        if: ${{ needs.deploy-prod.outputs.output1 == 'false'}}

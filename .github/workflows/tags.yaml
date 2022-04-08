@@ -3,46 +3,44 @@ name: deploy:prod
 on:
   push:
     tags:
-      - v0.0.2
-
+      - "**"
 jobs:
-  # API
   deployProd:
     runs-on: ubuntu-latest
     outputs:
-      output1: ${{steps.step1.outputs.prod}}
+      output1: ${{ steps.step1.outputs.test }}
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
-      - name: Test
+      - name: Set variables
         id: step1
         run: |
           Branch=${GITHUB_REF/refs\/tags\//}
           echo $Branch
           if [[ "$Branch" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
             echo "Matches"
-            echo "::set-output name=prod::true"
+            echo "::set-output name=test::1"
           else
             echo "Doesn't Matches"
-            echo "::set-output name=prod::false"
+            echo "::set-output name=test::0"
           fi
-      - name: Test
+      - name: Show variables
         run: |
           echo Branch: ${GITHUB_REF/refs\/tags\//}
           echo VALUE: ${{ needs.deployProd.outputs.output1 }}
       - name: Deploy
-        run: echo "Deploy Prod ${{needs.deploy-prod.outputs.output1}}"
-        if: ${{needs.deploy-prod.outputs.output1 == 'true'}}
+        run: echo "Deploy Prod ${{needs.deployProd.outputs.output1}}"
+        if: ${{needs.deploy-prod.outputs.output1 == 1}}
 
   deployUat:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
-      - name: Test
+      - name: Show variables
         run: |
           echo Branch: ${GITHUB_REF/refs\/tags\//}
           echo VALUE: ${{ needs.deploy-prod.outputs.output1 }}
       - name: Deploy
         run: echo "Deploy UAT ${{needs.deployProd.outputs.output1}}"
-        if: ${{ needs.deploy-prod.outputs.output1 == 'false'}}
+        if: ${{ needs.deploy-prod.outputs.output1 == 0}}

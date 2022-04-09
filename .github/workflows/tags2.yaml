@@ -12,12 +12,12 @@ jobs:
       - name: Deploy contracts
         id: main
         run: |
-          echo "::set-output name=test::1"
+          echo "::set-output name=test::true"
       - name: Run Project A
-        if: steps.main.outputs.test == 1
+        if: steps.main.outputs.test == true
         run: |
           echo Value ${{steps.main.outputs.test}}
-          echo Boolean ${{steps.main.outputs.test == 1}}
+          echo Boolean ${{steps.main.outputs.test == true}}
   deploy-uat:
     runs-on: ubuntu-latest
     steps:

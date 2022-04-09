@@ -24,10 +24,10 @@ jobs:
       - name: Show variables
         run: |
           echo "VALUE: $IS_PROD"
-          echo "boolean: $IS_PROD == 'true'"
+          # echo "boolean: $IS_PROD == 'true'"
       - name: Deploy
         run: echo "Deploy Prod $IS_PROD"
-        if: $IS_PROD == 'true'
+        # if: $IS_PROD == 'true'
 
   deployUat:
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
       - name: Show variables
         run: |
           echo "VALUE: $IS_PROD"
-          echo "boolean: $IS_PROD != 'true'"
+          # echo "boolean: $IS_PROD != 'true'"
       - name: Deploy
         run: echo "Deploy UAT $IS_PROD"
-        if: $IS_PROD != 'true'
+        # if: $IS_PROD != 'true'

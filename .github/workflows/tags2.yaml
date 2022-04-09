@@ -2,7 +2,7 @@ name: deploy:review
 on:
   push:
 jobs:
-  deploy-web3-review:
+  deploy-prod:
     runs-on: ubuntu-latest
     outputs:
       output1: ${{ steps.main.outputs.test }}
@@ -16,9 +16,9 @@ jobs:
       - name: Run Project A
         if: steps.main.outputs.test == 1
         run: |
-          echo Value {{steps.main.outputs.test}}
-          echo Boolean {{steps.main.outputs.test == 1}}
-  # build-amal-web-review:
+          echo Value ${{steps.main.outputs.test}}
+          echo Boolean ${{steps.main.outputs.test == 1}}
+  # deploy-uat:
   #   runs-on: ubuntu-latest
   #   needs: deploy-web3-review
   #   steps:

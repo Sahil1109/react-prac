@@ -12,11 +12,15 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
-      - name: Check release
-        # Directory name only
-        uses: ./.github/actions/check-release
-        with:
-          release: ${GITHUB_REF/refs\/tags\//}
+      - name: Set variables
+        run: |
+          Release version is: "echo ${{inputs.release}}"
+          if [[ "${{inputs.release}}" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
+            echo "Matches"
+            echo "IS_PROD=true" >> $GITHUB_ENV
+          else
+            echo "IS_PROD=false" >> $GITHUB_ENV
+          fi
       - name: Show variables
         run: |
           echo "VALUE: $IS_PROD"
@@ -31,11 +35,15 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
-      - name: Check release
-        # Directory name only
-        uses: ./.github/actions/check-release
-        with:
-          release: ${GITHUB_REF/refs\/tags\//}
+      - name: Set variables
+        run: |
+          Release version is: "echo ${{inputs.release}}"
+          if [[ "${{inputs.release}}" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
+            echo "Matches"
+            echo "IS_PROD=true" >> $GITHUB_ENV
+          else
+            echo "IS_PROD=false" >> $GITHUB_ENV
+          fi
       - name: Show variables
         run: |
           echo "VALUE: $IS_PROD"

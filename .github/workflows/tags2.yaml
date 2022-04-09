@@ -12,7 +12,7 @@ jobs:
       - name: Deploy contracts
         id: main
         run: |
-          echo ""::set-output name=test::1"
+          echo "::set-output name=test::1"
       - name: Run Project A
         if: steps.main.outputs.test == 1
         run: |

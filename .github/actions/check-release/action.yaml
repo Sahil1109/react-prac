@@ -1,0 +1,19 @@
+name: "Check release"
+description: "It checks the type of release"
+inputs:
+  release:
+    required: true
+    description: "Name of release"
+runs:
+  using: "composite"
+  steps:
+    - name: Set variables
+      run: |
+        Release version is: "echo ${{inputs.release}}"
+        if [[ "${{inputs.release}}" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
+          echo "Matches"
+          echo "IS_PROD=true" >> $GITHUB_ENV
+        else
+          echo "IS_PROD=false" >> $GITHUB_ENV
+        fi
+      shell: bash

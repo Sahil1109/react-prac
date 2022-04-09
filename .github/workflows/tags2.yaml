@@ -14,10 +14,10 @@ jobs:
         run: |
           echo "::set-output name=test::true"
       - name: Run Project A
-        if: steps.main.outputs.test == true
+        if: steps.main.outputs.test == 'true'
         run: |
           echo Value ${{steps.main.outputs.test}}
-          echo Boolean ${{steps.main.outputs.test == true}}
+          echo Boolean ${{steps.main.outputs.test == 'true'}}
   deploy-uat:
     runs-on: ubuntu-latest
     steps:

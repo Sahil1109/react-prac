@@ -45,7 +45,7 @@ jobs:
           fi
       - name: Show variables
         run: |
-          echo "VALUE: $IS_PROD"
+          echo "VALUE: ! $IS_PROD"
           echo "boolean: $IS_PROD != true"
       - name: Deploy
         run: echo "Deploy UAT $IS_PROD"

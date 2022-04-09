@@ -14,17 +14,19 @@ jobs:
         uses: actions/checkout@v3
       - name: Set variables
         run: |
+          IS_PROD=false
+          IS_UAT=false
           BRANCH=${GITHUB_REF/refs\/tags\//}
           if [[ "$BRANCH" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
             echo "Matches"
-            echo "IS_PROD=true" >> $GITHUB_ENV
+            echo "$IS_PROD=true" >> $GITHUB_ENV
           else
-            echo "IS_PROD=false" >> $GITHUB_ENV
+            echo "$IS_UAT=true" >> $GITHUB_ENV
           fi
       - name: Show variables
         run: |
-          echo "VALUE: $IS_PROD"
-          echo "boolean: {{$IS_PROD == true}} "
+          echo "VALUE PROD: $IS_PROD"
+          echo "VALUE UAT:  $IS_UAT"
       - name: Deploy
         run: echo "Deploy Prod $IS_PROD"
         # if: $IS_PROD
@@ -36,17 +38,19 @@ jobs:
         uses: actions/checkout@v3
       - name: Set variables
         run: |
+          IS_PROD=false
+          IS_UAT=false
           BRANCH=${GITHUB_REF/refs\/tags\//}
           if [[ "$BRANCH" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
             echo "Matches"
-            echo "IS_PROD=true" >> $GITHUB_ENV
+            echo "$IS_PROD=true" >> $GITHUB_ENV
           else
-            echo "IS_PROD=false" >> $GITHUB_ENV
+            echo "$IS_UAT=true" >> $GITHUB_ENV
           fi
       - name: Show variables
         run: |
-          echo "VALUE: ! $IS_PROD"
-          echo "boolean: $IS_PROD != true"
+          echo "VALUE PROD: $IS_PROD"
+          echo "VALUE UAT:  $IS_UAT"
       - name: Deploy
-        run: echo "Deploy UAT $IS_PROD"
+        run: echo "Deploy UAT $UAT"
         # if: $IS_PROD

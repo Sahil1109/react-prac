@@ -24,6 +24,7 @@ jobs:
         if: env.IS_PROD == 'true'
         run: |
           echo "VALUE PROD: $IS_PROD"
+          echo boolean env.IS_PROD == 'true'
       - name: Deploy
         if: env.IS_PROD == 'true'
         run: echo "Deploy Prod"

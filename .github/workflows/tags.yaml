@@ -28,23 +28,23 @@ jobs:
         if: env.IS_PROD == 'true'
         run: echo "Deploy Prod"
 
-  # deployUat:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone repository
-  #       uses: actions/checkout@v3
-  #     - name: Set variables
-  #       run: |
-  #         BRANCH=${GITHUB_REF/refs\/tags\//}
-  #         if [[ "$BRANCH" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
-  #           echo "Matches"
-  #           echo "IS_PROD=true" >> $GITHUB_ENV
-  #         else
-  #           echo "IS_PROD=false" >> $GITHUB_ENV
-  #         fi
-  #     - name: Show variables
-  #       run: |
-  #         echo "VALUE PROD: $IS_PROD"
-  #     - name: Deploy
-  #       run: echo "Deploy UAT"
-  #       if: IS_PROD == false
+  deployUat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Set variables
+        run: |
+          BRANCH=v0.4.4
+          if [[ "$BRANCH" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
+            echo "Matches"
+            echo "IS_PROD=true" >> $GITHUB_ENV
+          else
+            echo "IS_PROD=false" >> $GITHUB_ENV
+          fi
+      - name: Show variables
+        run: |
+          echo "VALUE PROD: $IS_PROD"
+      - name: Deploy
+        run: echo "Deploy UAT"
+        if: env.IS_PROD == 'true'

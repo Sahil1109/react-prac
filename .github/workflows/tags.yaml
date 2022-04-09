@@ -2,8 +2,7 @@ name: deploy:prod
 
 on:
   push:
-    tags:
-      - "**"
+
 jobs:
   deployProd:
     runs-on: ubuntu-latest
@@ -14,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Set variables
         run: |
-          BRANCH=${GITHUB_REF/refs\/tags\//}
+          BRANCH=v0.1.2
           if [[ "$BRANCH" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
             echo "Matches"
             echo "IS_PROD=true" >> $GITHUB_ENV
@@ -22,29 +21,30 @@ jobs:
             echo "IS_PROD=false" >> $GITHUB_ENV
           fi
       - name: Show variables
+        if: $IS_PROD == 'true'
         run: |
           echo "VALUE PROD: $IS_PROD"
       - name: Deploy
+        if: $IS_PROD == 'true'
         run: echo "Deploy Prod"
-        if: IS_PROD == true
 
-  deployUat:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone repository
-        uses: actions/checkout@v3
-      - name: Set variables
-        run: |
-          BRANCH=${GITHUB_REF/refs\/tags\//}
-          if [[ "$BRANCH" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
-            echo "Matches"
-            echo "IS_PROD=true" >> $GITHUB_ENV
-          else
-            echo "IS_PROD=false" >> $GITHUB_ENV
-          fi
-      - name: Show variables
-        run: |
-          echo "VALUE PROD: $IS_PROD"
-      - name: Deploy
-        run: echo "Deploy UAT"
-        if: IS_PROD == false
+  # deployUat:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone repository
+  #       uses: actions/checkout@v3
+  #     - name: Set variables
+  #       run: |
+  #         BRANCH=${GITHUB_REF/refs\/tags\//}
+  #         if [[ "$BRANCH" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
+  #           echo "Matches"
+  #           echo "IS_PROD=true" >> $GITHUB_ENV
+  #         else
+  #           echo "IS_PROD=false" >> $GITHUB_ENV
+  #         fi
+  #     - name: Show variables
+  #       run: |
+  #         echo "VALUE PROD: $IS_PROD"
+  #     - name: Deploy
+  #       run: echo "Deploy UAT"
+  #       if: IS_PROD == false

@@ -4,48 +4,131 @@ on:
   workflow_dispatch:
 
 jobs:
-  deployProd:
+  # API
+  static-check-api:
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.step1.outputs.test }}
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
-      - name: Set variables
-        run: |
-          BRANCH=v0.1.2
-          if [[ "$BRANCH" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
-            echo "Matches"
-            echo "IS_PROD=true" >> $GITHUB_ENV
-          else
-            echo "IS_PROD=false" >> $GITHUB_ENV
-          fi
-      - name: Show variables
-        if: env.IS_PROD == 'true'
-        run: |
-          echo "VALUE PROD: $IS_PROD"
-          echo boolean env.IS_PROD == 'true'
-      - name: Deploy
-        if: env.IS_PROD == 'true'
-        run: echo "Deploy Prod"
 
-  deployUat:
+  test-api:
+    needs: static-check-api
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+  build-api:
+    needs: static-check-api
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+  deploy-api-prod:
+    needs: build-api
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: DEPLOY API
+        run: echo "Hey"
+
+  # Semaphore-App
+  static-check-semaphore-web:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Static-check
+        run: echo "Hey"
+
+  build-semaphore-app:
+    needs: static-check-semaphore-web
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: BUILD semaphore-app
+        run: echo "Hey"
+
+  deploy-semaphore-app-prod:
+    needs: build-semaphore-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: BUILD semaphore-app
+        run: echo "Build semaphore-app"
+
+  # Web3
+  static-check-web3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Static-check
+        run: echo "Hey"
+
+  test-web3:
+    needs: static-check-web3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Unit tests
+        run: echo "Hey"
+
+  build-web3:
+    needs: static-check-web3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Compile contracts
+        run: echo "Hey"
+
+  deploy-web3-prod:
+    needs: build-web3
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
       - name: Set variables
         run: |
-          BRANCH=v0.4.4
+          BRANCH=${GITHUB_REF/refs\/tags\//}
           if [[ "$BRANCH" =~ ^(v)([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$ ]]; then
             echo "Matches"
             echo "IS_PROD=true" >> $GITHUB_ENV
           else
             echo "IS_PROD=false" >> $GITHUB_ENV
           fi
-      - name: Show variables
-        run: |
-          echo "VALUE PROD: $IS_PROD"
-      - name: Deploy
-        run: echo "Deploy UAT"
-        if: env.IS_PROD == 'false'
+      - name: Deploy contracts(UAT)
+        run: echo "Hey"
+
+  # Amal-web
+  static-check-amal-web:
+    runs-on: ubuntu-latest
+    needs: deploy-web3-prod
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Static-check
+        run: echo "Hey"
+
+  build-amal-web:
+    runs-on: ubuntu-latest
+    needs: static-check-amal-web
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Build Amal-web
+        run: echo "Hey"
+
+  deploy-amal-web-prod:
+    needs: build-amal-web
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+      - name: Deploy to Firebase
+        run: echo "Hey"

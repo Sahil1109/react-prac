@@ -1,1 +1,2 @@
-// branch A
+var res = 1;
+fkjnsj;

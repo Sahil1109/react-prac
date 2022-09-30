@@ -1,2 +1,1 @@
-var res = 1;
-fkjnsj;
+// branch A

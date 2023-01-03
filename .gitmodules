@@ -1,0 +1,3 @@
+[submodule "deploy-react"]
+	path = deploy-react
+	url = https://github.com/Sahil1109/deploy-react.git
